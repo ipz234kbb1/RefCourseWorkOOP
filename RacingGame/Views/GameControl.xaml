@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="RacingGame.Views.GameControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:RacingGame.Converters"
+             Width="800" Height="900"
+             Focusable="True">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:FuelToWidthConverter x:Key="FuelToWidthConverter" />
+        <Style x:Key="OutlinedTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="48"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+            <Setter Property="TextBlock.Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Width="800" Height="900">
+        <Canvas x:Name="GameCanvas" Width="800" Height="900">
+            <Image Source="{Binding Map.Image}" Width="800" Height="901" Canvas.Top="{Binding Map.Map1Y}" Stretch="Fill"/>
+            <Image Source="{Binding Map.Image}" Width="800" Height="901" Canvas.Top="{Binding Map.Map2Y}" Stretch="Fill"/>
+            <Image x:Name="Car" Source="{Binding Car.Image}" Width="100" Height="150" Canvas.Left="{Binding Car.X}" Canvas.Top="{Binding Car.Y}"/>
+
+            <ItemsControl ItemsSource="{Binding Coins}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding X}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding Image}" Width="70" Height="70"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl ItemsSource="{Binding Obstacles}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding X}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding Image}" Width="100" Height="150"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl ItemsSource="{Binding Fuels}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding X}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding Image}" Width="70" Height="70"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Opacity="0.7" Margin="10">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/Items/Coin.png" Width="50" Height="50" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Stats.CoinCount}" Foreground="White" FontSize="40" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
+                    <Image Source="/Resources/Items/fuel.png" Width="50" Height="50" VerticalAlignment="Center"/>
+                    <Border Width="100" Height="20" BorderBrush="White" BorderThickness="1" Margin="5,0,0,0" VerticalAlignment="Center">
+                        <Grid Width="100" Height="18">
+                            <Rectangle Fill="Green" Width="{Binding Stats.Fuel, Converter={StaticResource FuelToWidthConverter}}" HorizontalAlignment="Left" Height="18"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
+                    <TextBlock Text="{Binding Stats.Distance, StringFormat={}{0:00000} m}" Style="{StaticResource OutlinedTextBlockStyle}" />
+                </StackPanel>
+            </StackPanel>
+        </Canvas>
+
+        <Grid Visibility="{Binding Stats.IsGameOver, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#AA000000">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Height="280">
+                <TextBlock Text="Гру завершено" Foreground="#FFF90101" FontSize="50" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Stats.Distance, StringFormat='Дистанція: {0:00000} m'}" Foreground="White" FontSize="30" HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Margin="20,10,0,0" Width="120">
+                    <Image Source="/Resources/Items/Coin.png" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Stats.CoinCount}" Foreground="White" Width="100" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="100">
+                    <Button Content="Меню" Command="{Binding GoToMainMenuCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="150" Margin="10"/>
+                    <Button Content="Спочатку" Command="{Binding RetryGameCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="150" Margin="10"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid Visibility="{Binding Stats.IsPaused, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#AA000000">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Height="280">
+                <TextBlock Text="Пауза" Foreground="#FFF90101" FontSize="50" HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Height="100">
+                    <Button Content="Меню" Command="{Binding GoToMainMenuCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="190" Margin="10"/>
+                    <Button Content="Продовжити" Command="{Binding ResumeGameCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="190" Margin="10"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

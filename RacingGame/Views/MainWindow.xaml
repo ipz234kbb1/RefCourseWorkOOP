@@ -1,0 +1,12 @@
+﻿<Window x:Class="RacingGame.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:RacingGame.Views"
+        Title="Racing Game" Height="900" Width="800"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="Manual"
+        ResizeMode="CanResize" Icon="/Resources/Items/icon.png">
+    <Grid>
+        <ContentControl Content="{Binding CurrentView}" />
+    </Grid>
+</Window>

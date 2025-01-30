@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="RacingGame.Views.MainMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="800" Height="900">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Image Source="/Resources/Maps/map1.jpg" Stretch="Fill" Grid.RowSpan="2"/>
+        <TextBlock Text="Racing Game" Foreground="White" FontSize="100" FontWeight="ExtraBold" HorizontalAlignment="Center" Margin="20,50,20,20" Grid.Row="0"/>
+        <Border Background="#AA000000" CornerRadius="10" Padding="40" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+            <StackPanel Width="300">
+                <Button Content="Грати" Command="{Binding PlayCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="250" Height="60" Margin="10"/>
+                <Button Content="Вхід до аккаунту" Command="{Binding LogInCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="250" Height="60" Margin="10"/>
+                <Button Content="Реєстрація" Command="{Binding RegisterCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="250" Height="60" Margin="10"/>
+                <Button Content="Таблиця лідерів" Command="{Binding LeaderboardCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="250" Height="60" Margin="10"/>
+                <Button Content="Вихід з гри" Command="{Binding ExitCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="250" Height="60" Margin="10"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="RacingGame.Views.MapAndCarSelectionControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="800" Height="900">
+    <Grid>
+        <Image Source="/Resources/Maps/map1.jpg" Stretch="Fill" />
+
+        <Border Background="#AA000000" CornerRadius="10" Padding="20" HorizontalAlignment="Center" VerticalAlignment="Center" Height="464">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10">
+                    <TextBlock Text="{Binding CurrentUser.login}" Foreground="White" FontSize="28" FontWeight="Bold" Margin="10,0">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <Image Source="/Resources/Items/Coin.png" Width="30" Height="30" VerticalAlignment="Center" Margin="10,0"/>
+                    <TextBlock Text="{Binding CurrentUser.money}" Foreground="White" FontSize="28" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Grid.Column="0" Source="/Resources/Items/previous.png" Width="50" Height="50" Margin="10" Cursor="Hand">
+                            <Image.InputBindings>
+                                <MouseBinding Command="{Binding PreviousMapCommand}" MouseAction="LeftClick"/>
+                            </Image.InputBindings>
+                        </Image>
+                        <Image Grid.Column="1" Source="{Binding SelectedMapImage}" Width="200" Height="200"/>
+                        <Image Grid.Column="2" Source="/Resources/Items/next.png" Width="50" Height="50" Margin="10" Cursor="Hand">
+                            <Image.InputBindings>
+                                <MouseBinding Command="{Binding NextMapCommand}" MouseAction="LeftClick"/>
+                            </Image.InputBindings>
+                        </Image>
+                    </Grid>
+
+                    <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Grid.Column="0" Source="/Resources/Items/previous.png" Width="50" Height="50" Margin="10" Cursor="Hand">
+                            <Image.InputBindings>
+                                <MouseBinding Command="{Binding PreviousCarCommand}" MouseAction="LeftClick"/>
+                            </Image.InputBindings>
+                        </Image>
+                        <Image Grid.Column="1" Source="{Binding SelectedCarImage}" Width="200" Height="200"/>
+                        <Image Grid.Column="2" Source="/Resources/Items/next.png" Width="50" Height="50" Margin="10" Cursor="Hand">
+                            <Image.InputBindings>
+                                <MouseBinding Command="{Binding NextCarCommand}" MouseAction="LeftClick"/>
+                            </Image.InputBindings>
+                        </Image>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="0,55,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="Повернутися" Command="{Binding BackToMainMenuCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="200" Height="50" Margin="10" HorizontalAlignment="Left"/>
+                    <Button Grid.Column="1" Content="Розпочати гру" Command="{Binding StartGameCommand}" Style="{StaticResource MainMenuButtonStyle}" Width="200" Height="50" Margin="10" HorizontalAlignment="Right"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
