@@ -5,7 +5,9 @@ namespace RacingGame.Models
     public class Obstacle : GameObject
     {
         private bool _isActive;
-
+        private const double ObstacleWidth = 90;
+        private const double ObstacleHeight = 150;
+        private const double PositionOffset = 20;
         public bool IsActive
         {
             get => _isActive;
@@ -44,7 +46,7 @@ namespace RacingGame.Models
             var newObstacle = new Obstacle
             {
                 Image = ObstacleImages[random.Next(0, ObstacleImages.Length)],
-                X = lanePositions[lane] - 20,
+                X = lanePositions[lane] - PositionOffset,
                 Y = -160
             };
 
@@ -53,7 +55,7 @@ namespace RacingGame.Models
 
         public override bool CheckCollision(double x, double y, double width, double height)
         {
-            return IsColliding(x, y, width, height, X, Y, 90, 150);
+            return IsColliding(x, y, width, height, X, Y, ObstacleWidth, ObstacleHeight);
         }
         
     }

@@ -6,7 +6,10 @@ namespace RacingGame.Models
     public class Coin : GameObject
     {
         private int _value;
-
+        
+        private const double CoinWidth = 70;
+        private const double CoinHeight = 70;
+        private const int CoinSpawnStep = 80;
         public int Value
         {
             get => _value;
@@ -51,7 +54,7 @@ namespace RacingGame.Models
                 {
                     Image = $"/Resources/Items/Coin{coinAmount}.png",
                     X = lanePositions[lane],
-                    Y = -70 - (i * 80),
+                    Y = -CoinHeight - (i * CoinSpawnStep),
                     Value = coinAmount
                 };
 
@@ -63,7 +66,7 @@ namespace RacingGame.Models
 
         public override bool CheckCollision(double x, double y, double width, double height)
         {
-            return IsColliding(x, y, width, height, X, Y, 70, 70);
+            return IsColliding(x, y, width, height, X, Y, CoinWidth, CoinHeight);
         }
         
     }

@@ -38,14 +38,16 @@ namespace RacingGame.ViewModels
         public event Action RequestRetryGame;
 
         private static readonly int[] LanePositions = { 150, 295, 440, 590 };
-
+        private const double InitialCarX = 327;
+        private const double InitialCarY = 600;
+        private const int TimerInterval = 1000 / 120;
         public GameViewModel(string carImage, string mapImage, User currentUser)
         {
             Car = new Car
             {
                 Image = carImage,
-                X = 327,
-                Y = 600
+                X = InitialCarX,
+                Y = InitialCarY
             };
 
             Map = new GameMap
@@ -66,7 +68,7 @@ namespace RacingGame.ViewModels
 
             _random = new Random();
             _gameTimer = new DispatcherTimer();
-            _gameTimer.Interval = TimeSpan.FromMilliseconds(1000 / 120);
+            _gameTimer.Interval = TimeSpan.FromMilliseconds(TimerInterval);
             _gameTimer.Tick += GameTick;
             _gameTimer.Start();
 

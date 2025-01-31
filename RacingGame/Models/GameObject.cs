@@ -7,7 +7,7 @@ namespace RacingGame.Models
         private string _image;
         private double _x;
         private double _y;
-
+        protected const double collisionMargin = 13;
         public string Image
         {
             get => _image;
@@ -40,7 +40,6 @@ namespace RacingGame.Models
         public abstract bool CheckCollision(double x, double y, double width, double height);
         protected bool IsColliding(double x1, double y1, double width1, double height1, double x2, double y2, double width2, double height2)
         {
-            double collisionMargin = 13;
             return !(x1 + collisionMargin > x2 + width2 - collisionMargin || x1 + width1 - collisionMargin < x2 + collisionMargin ||
                      y1 + collisionMargin > y2 + height2 - collisionMargin || y1 + height1 - collisionMargin < y2 + collisionMargin);
         }
