@@ -73,7 +73,7 @@ namespace RacingGame.ViewModels
                 var userExists = context.Users.Any(u => u.login == Login);
                 if (userExists)
                 {
-                    MessageBox.Show("Аккант з таким логіном вже існує!. Оберіть інший логін.");
+                    MessageBox.Show("Аккаунт з таким логіном вже існує!. Оберіть інший логін.");
                     return;
                 }
 
