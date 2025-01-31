@@ -65,12 +65,6 @@ namespace RacingGame.Models
         {
             return IsColliding(x, y, width, height, X, Y, 70, 70);
         }
-
-        private bool IsColliding(double x1, double y1, double width1, double height1, double x2, double y2, double width2, double height2)
-        {
-            double collisionMargin = 13;
-            return !(x1 + collisionMargin > x2 + width2 - collisionMargin || x1 + width1 - collisionMargin < x2 + collisionMargin ||
-                     y1 + collisionMargin > y2 + height2 - collisionMargin || y1 + height1 - collisionMargin < y2 + collisionMargin);
-        }
+        
     }
 }
