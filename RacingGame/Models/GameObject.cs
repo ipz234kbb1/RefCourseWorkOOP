@@ -2,7 +2,7 @@
 
 namespace RacingGame.Models
 {
-    public class GameObject : INotifyPropertyChanged
+    public abstract class GameObject : INotifyPropertyChanged
     {
         private string _image;
         private double _x;
@@ -37,7 +37,7 @@ namespace RacingGame.Models
                 OnPropertyChanged(nameof(Y));
             }
         }
-        
+        public abstract bool CheckCollision(double x, double y, double width, double height);
         protected bool IsColliding(double x1, double y1, double width1, double height1, double x2, double y2, double width2, double height2)
         {
             double collisionMargin = 13;

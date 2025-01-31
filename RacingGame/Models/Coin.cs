@@ -61,7 +61,7 @@ namespace RacingGame.Models
             return coins;
         }
 
-        public bool CheckCollision(double x, double y, double width, double height)
+        public override bool CheckCollision(double x, double y, double width, double height)
         {
             return IsColliding(x, y, width, height, X, Y, 70, 70);
         }

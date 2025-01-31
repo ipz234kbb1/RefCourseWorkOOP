@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
 using RacingGame.Models;
@@ -99,25 +101,7 @@ namespace RacingGame.ViewModels
         {
             if (!Stats.IsGameOver)
             {
-                if (Stats.Speed > 0 && !Stats.IsSlowingDown)
-                {
-                    Stats.Distance += Stats.Speed / 60; 
-                }
-
-                if (Stats.Fuel > 0)
-                {
-                    Stats.Fuel -= 0.1;
-                }
-                else
-                {
-                    StartSlowingDown();
-                }
-
-                if (Stats.IsSlowingDown)
-                {
-                    SlowDownCar();
-                }
-
+                UpdateGameStats();
                 UpdateMapPosition();
                 AddGameObjects();
                 UpdateGameObjectPositions();
@@ -125,7 +109,27 @@ namespace RacingGame.ViewModels
                 UpdateCarPosition();
             }
         }
+        private void UpdateGameStats()
+        {
+            if (Stats.Speed > 0 && !Stats.IsSlowingDown)
+            {
+                Stats.Distance += Stats.Speed / 60;
+            }
 
+            if (Stats.Fuel > 0)
+            {
+                Stats.Fuel -= 0.1;
+            }
+            else
+            {
+                StartSlowingDown();
+            }
+
+            if (Stats.IsSlowingDown)
+            {
+                SlowDownCar();
+            }
+        }
         private void StartSlowingDown()
         {
             Stats.IsSlowingDown = true;
@@ -258,70 +262,52 @@ namespace RacingGame.ViewModels
 
         public void CheckCollisions()
         {
-            for (int i = Coins.Count - 1; i >= 0; i--)
+            CheckCollisionsWithObjects(Coins, coin =>
             {
-                var coin = Coins[i];
-                if (coin.CheckCollision(Car.X, Car.Y, 100, 150))
-                {
-                    Stats.CoinCount += coin.Value;
-                    coin.Collect();
-                    Coins.RemoveAt(i);
-                }
-            }
+                Stats.CoinCount += coin.Value;
+                coin.Collect();
+            });
 
-            for (int i = Obstacles.Count - 1; i >= 0; i--)
+            CheckCollisionsWithObjects(Obstacles, obstacle =>
             {
-                var obstacle = Obstacles[i];
-                if (obstacle.CheckCollision(Car.X, Car.Y, 100, 150))
-                {
-                    Stats.Speed = 0;
-                    Stats.IsGameOver = true;
-                    obstacle.Deactivate();
-                    _gameTimer.Stop();
-                    SaveUserProgress();
-                }
-            }
+                Stats.Speed = 0;
+                Stats.IsGameOver = true;
+                obstacle.Deactivate();
+                _gameTimer.Stop();
+                SaveUserProgress();
+            });
 
-            for (int i = Fuels.Count - 1; i >= 0; i--)
+            CheckCollisionsWithObjects(Fuels, fuel =>
             {
-                var fuel = Fuels[i];
-                if (fuel.CheckCollision(Car.X, Car.Y, 100, 150))
+                Stats.IsGameOver = false;
+                Stats.Fuel = 100;
+                _gameTimer.Start();
+            });
+        }
+
+        private void CheckCollisionsWithObjects<T>(IList<T> objects, Action<T> onCollision) where T : GameObject
+        {
+            for (int i = objects.Count - 1; i >= 0; i--)
+            {
+                var obj = objects[i];
+                if (obj.CheckCollision(Car.X, Car.Y, 100, 150))
                 {
-                    Stats.IsGameOver = false;
-                    Stats.Fuel = 100;
-                    _gameTimer.Start();
-                    Fuels.RemoveAt(i);
+                    onCollision(obj);
+                    objects.RemoveAt(i);
                 }
             }
         }
 
         private bool IsSpawningOnOtherObjects(double x, double y, double width, double height)
         {
-            foreach (var coin in Coins)
-            {
-                if (coin.CheckCollision(x, y, width, height))
-                {
-                    return true;
-                }
-            }
+            return CheckCollisionsWithObjects(Coins, x, y, width, height) ||
+                   CheckCollisionsWithObjects(Obstacles, x, y, width, height) ||
+                   CheckCollisionsWithObjects(Fuels, x, y, width, height);
+        }
 
-            foreach (var obstacle in Obstacles)
-            {
-                if (obstacle.CheckCollision(x, y, width, height))
-                {
-                    return true;
-                }
-            }
-
-            foreach (var fuel in Fuels)
-            {
-                if (fuel.CheckCollision(x, y, width, height))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+        private bool CheckCollisionsWithObjects<T>(IEnumerable<T> objects, double x, double y, double width, double height) where T : GameObject
+        {
+            return objects.Any(obj => obj.CheckCollision(x, y, width, height));
         }
 
         private void MoveLeft()
