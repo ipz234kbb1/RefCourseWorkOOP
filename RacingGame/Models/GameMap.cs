@@ -16,7 +16,10 @@
                 OnPropertyChanged(nameof(Map1Y));
             }
         }
-
+        public override bool CheckCollision(double x, double y, double width, double height)
+        {
+            return false;
+        }
         public double Map2Y
         {
             get => _map2Y;

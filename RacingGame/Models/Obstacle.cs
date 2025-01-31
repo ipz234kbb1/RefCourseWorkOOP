@@ -51,7 +51,7 @@ namespace RacingGame.Models
             return newObstacle;
         }
 
-        public bool CheckCollision(double x, double y, double width, double height)
+        public override bool CheckCollision(double x, double y, double width, double height)
         {
             return IsColliding(x, y, width, height, X, Y, 90, 150);
         }
