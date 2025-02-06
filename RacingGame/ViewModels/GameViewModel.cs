@@ -312,21 +312,15 @@ namespace RacingGame.ViewModels
             return objects.Any(obj => obj.CheckCollision(x, y, width, height));
         }
 
-        private void MoveLeft()
+        private void MoveCar(bool moveLeft, bool moveRight)
         {
-            Car.MovingLeft = true;
+            Car.MovingLeft = moveLeft;
+            Car.MovingRight = moveRight;
         }
 
-        private void MoveRight()
-        {
-            Car.MovingRight = true;
-        }
-
-        private void StopMove()
-        {
-            Car.MovingLeft = false;
-            Car.MovingRight = false;
-        }
+        private void MoveLeft() => MoveCar(true, false);
+        private void MoveRight() => MoveCar(false, true);
+        private void StopMove() => MoveCar(false, false);
 
         private void GoToMainMenu()
         {
@@ -343,6 +337,15 @@ namespace RacingGame.ViewModels
 
         private void ResetGame()
         {
+            ResetGameStats();
+            ResetCarPosition();
+            _gameTimer.Start();
+            _coinsSaved = false;
+            _distanceUpdated = false;
+        }
+
+        private void ResetGameStats()
+        {
             Stats.Distance = 0;
             Stats.Fuel = 100;
             Stats.CoinCount = 0;
@@ -354,11 +357,12 @@ namespace RacingGame.ViewModels
             Coins.Clear();
             Obstacles.Clear();
             Fuels.Clear();
+        }
+
+        private void ResetCarPosition()
+        {
             Car.X = 327;
             Car.Y = 600;
-            _gameTimer.Start();
-            _coinsSaved = false;
-            _distanceUpdated = false;
         }
 
         private void PauseGame()
