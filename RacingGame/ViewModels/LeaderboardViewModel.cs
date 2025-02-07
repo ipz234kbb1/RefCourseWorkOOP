@@ -28,6 +28,11 @@ namespace RacingGame.ViewModels
 
         private void LoadUsers()
         {
+            LoadAndSortUsersByDistance();
+        }
+
+        private void LoadAndSortUsersByDistance()
+        {
             using (var context = new ApplicationContext())
             {
                 var users = context.Users.AsQueryable().OrderByDescending(u => u.distance).ToList();

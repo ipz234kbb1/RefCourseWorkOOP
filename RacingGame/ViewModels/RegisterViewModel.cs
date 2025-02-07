@@ -56,18 +56,18 @@ namespace RacingGame.ViewModels
 
         private void Register()
         {
-            if (string.IsNullOrEmpty(Login) || string.IsNullOrEmpty(Password))
-            {
-                MessageBox.Show("Введіть логін та пароль.");
-                return;
-            }
+            ValidateLoginAndPassword();
+            ValidatePasswordsMatch();
+            VerifyUniqueLogin();
+        }
 
-            if (Password != ConfirmPassword)
-            {
-                MessageBox.Show("Паролі не співпадають.");
-                return;
-            }
+        private void BackToMainMenu()
+        {
+            _mainWindowViewModel.CurrentView = new MainMenuView();
+        }
 
+        private void VerifyUniqueLogin()
+        {
             using (var context = new ApplicationContext())
             {
                 var userExists = context.Users.Any(u => u.login == Login);
@@ -86,9 +86,22 @@ namespace RacingGame.ViewModels
             }
         }
 
-        private void BackToMainMenu()
+        private void ValidatePasswordsMatch()
         {
-            _mainWindowViewModel.CurrentView = new MainMenuView();
+            if (Password != ConfirmPassword)
+            {
+                MessageBox.Show("Паролі не співпадають.");
+                return;
+            }
+        }
+
+        private void ValidateLoginAndPassword()
+        {
+            if (string.IsNullOrEmpty(Login) || string.IsNullOrEmpty(Password))
+            {
+                MessageBox.Show("Введіть логін та пароль.");
+                return;
+            }
         }
     }
 }
