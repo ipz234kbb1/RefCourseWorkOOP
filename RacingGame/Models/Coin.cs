@@ -47,7 +47,18 @@ namespace RacingGame.Models
             }
 
             var coins = new ObservableCollection<Coin>();
+            SpawnCoinCluster(lanePositions, lane, coinAmount, coins);
 
+            return coins;
+        }
+
+        public override bool CheckCollision(double x, double y, double width, double height)
+        {
+            return IsColliding(x, y, width, height, X, Y, CoinWidth, CoinHeight);
+        }
+
+        private static void SpawnCoinCluster(int[] lanePositions, int lane, int coinAmount, ObservableCollection<Coin> coins)
+        {
             for (int i = 0; i < 5; i++)
             {
                 var newCoin = new Coin
@@ -60,14 +71,6 @@ namespace RacingGame.Models
 
                 coins.Add(newCoin);
             }
-
-            return coins;
         }
-
-        public override bool CheckCollision(double x, double y, double width, double height)
-        {
-            return IsColliding(x, y, width, height, X, Y, CoinWidth, CoinHeight);
-        }
-        
     }
 }

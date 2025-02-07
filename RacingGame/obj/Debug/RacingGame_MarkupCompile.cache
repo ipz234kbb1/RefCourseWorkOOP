@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\Projects\Rider\RacingGame\RacingGame\obj\Debug\
+C:\Users\ipz23\RefCourseWorkOOP\RacingGame\obj\Debug\
 RacingGame
 none
 false
 DEBUG;TRACE
-D:\Projects\Rider\RacingGame\RacingGame\App.xaml
+C:\Users\ipz23\RefCourseWorkOOP\RacingGame\App.xaml
 7-429458545
 
 312065788521
-231769818263
+23-818397367
 Views\GameControl.xaml;Views\LeaderboardView.xaml;Views\LoginControl.xaml;Views\MainMenuView.xaml;Views\MainWindow.xaml;Views\MapAndCarSelectionControl.xaml;Views\RegisterControl.xaml;
 
 False

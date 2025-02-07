@@ -11,12 +11,12 @@ namespace RacingGame.ViewModels
         private string _selectedCarImage;
         private User _currentUser;
 
-        public ICommand PreviousMapCommand { get; }
-        public ICommand NextMapCommand { get; }
-        public ICommand PreviousCarCommand { get; }
-        public ICommand NextCarCommand { get; }
-        public ICommand BackToMainMenuCommand { get; }
-        public ICommand StartGameCommand { get; }
+        public ICommand PreviousMapCommand { get; private set; }
+        public ICommand NextMapCommand { get; private set; }
+        public ICommand PreviousCarCommand { get; private set; }
+        public ICommand NextCarCommand { get; private set; }
+        public ICommand BackToMainMenuCommand { get; private set; }
+        public ICommand StartGameCommand { get; private set; }
 
         private readonly MainWindowViewModel _mainWindowViewModel;
 
@@ -31,19 +31,8 @@ namespace RacingGame.ViewModels
         public MapAndCarSelectionViewModel(MainWindowViewModel mainWindowViewModel)
         {
             _mainWindowViewModel = mainWindowViewModel;
-
-            PreviousMapCommand = new RelayCommand(PreviousMap);
-            NextMapCommand = new RelayCommand(NextMap);
-            PreviousCarCommand = new RelayCommand(PreviousCar);
-            NextCarCommand = new RelayCommand(NextCar);
-            BackToMainMenuCommand = new RelayCommand(BackToMainMenu);
-            StartGameCommand = new RelayCommand(StartGame);
-
-            _currentMapIndex = 0;
-            _currentCarIndex = 0;
-            SelectedMapImage = _mapImages[_currentMapIndex];
-            SelectedCarImage = _carImages[_currentCarIndex];
-
+            InitializeGameCommands();
+            InitializeSelectedMapAndCar();
             CurrentUser = _mainWindowViewModel.CurrentUser;
         }
 
@@ -109,6 +98,24 @@ namespace RacingGame.ViewModels
         private void StartGame()
         {
             RequestStartGame?.Invoke(SelectedCarImage, SelectedMapImage);
+        }
+
+        private void InitializeSelectedMapAndCar()
+        {
+            _currentMapIndex = 0;
+            _currentCarIndex = 0;
+            SelectedMapImage = _mapImages[_currentMapIndex];
+            SelectedCarImage = _carImages[_currentCarIndex];
+        }
+
+        private void InitializeGameCommands()
+        {
+            PreviousMapCommand = new RelayCommand(PreviousMap);
+            NextMapCommand = new RelayCommand(NextMap);
+            PreviousCarCommand = new RelayCommand(PreviousCar);
+            NextCarCommand = new RelayCommand(NextCar);
+            BackToMainMenuCommand = new RelayCommand(BackToMainMenu);
+            StartGameCommand = new RelayCommand(StartGame);
         }
     }
 }
