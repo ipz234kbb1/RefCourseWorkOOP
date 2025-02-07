@@ -203,39 +203,54 @@ namespace RacingGame.ViewModels
 
         private void AddGameObjects()
         {
-            if (_random.Next(0, 100) < 1)
-            {
-                int objectType = _random.Next(0, 2);
+            TrySpawnRandomObject();
+            TrySpawnFuel();
+        }
 
-                if (objectType == 0)
+        private void TrySpawnRandomObject()
+        {
+            if (_random.Next(0, 100) >= 1) return;
+
+            var objectType = _random.Next(0, 2);
+            if (objectType == 0)
+            {
+                AddCoins();
+            }
+            else
+            {
+                AddObstacle();
+            }
+        }
+
+        private void AddCoins()
+        {
+            foreach (var coin in Coin.SpawnCoins(_random, LanePositions))
+            {
+                if (!IsSpawningOnOtherObjects(coin.X, coin.Y, 70, 70))
                 {
-                    var newCoins = Coin.SpawnCoins(_random, LanePositions);
-                    foreach (var coin in newCoins)
-                    {
-                        if (!IsSpawningOnOtherObjects(coin.X, coin.Y, 70, 70))
-                        {
-                            Coins.Add(coin);
-                        }
-                    }
-                }
-                else if (objectType == 1)
-                {
-                    var newObstacle = Obstacle.SpawnObstacle(_random, LanePositions);
-                    if (!IsSpawningOnOtherObjects(newObstacle.X, newObstacle.Y, 90, 150))
-                    {
-                        Obstacles.Add(newObstacle);
-                    }
+                    Coins.Add(coin);
                 }
             }
+        }
 
-            if (Stats.Distance - _lastFuelSpawnDistance >= 80)
+        private void AddObstacle()
+        {
+            var newObstacle = Obstacle.SpawnObstacle(_random, LanePositions);
+            if (!IsSpawningOnOtherObjects(newObstacle.X, newObstacle.Y, 90, 150))
             {
-                var newFuel = Fuel.SpawnFuel(_random, LanePositions);
-                if (!IsSpawningOnOtherObjects(newFuel.X, newFuel.Y, 70, 70))
-                {
-                    Fuels.Add(newFuel);
-                    _lastFuelSpawnDistance = Stats.Distance;
-                }
+                Obstacles.Add(newObstacle);
+            }
+        }
+
+        private void TrySpawnFuel()
+        {
+            if (Stats.Distance - _lastFuelSpawnDistance < 80) return;
+
+            var newFuel = Fuel.SpawnFuel(_random, LanePositions);
+            if (!IsSpawningOnOtherObjects(newFuel.X, newFuel.Y, 70, 70))
+            {
+                Fuels.Add(newFuel);
+                _lastFuelSpawnDistance = Stats.Distance;
             }
         }
 
